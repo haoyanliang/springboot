@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.hyl.spring</groupId>
+  <artifactId>springboot</artifactId>
+  <version>${project.version}</version>
+  <packaging>pom</packaging>
+  <name>springboot-parent</name>
+  <modules>
+  	<module>common</module>
+  	<module>spring-mall</module>
+  </modules>
+  <properties>  	
+  	<project.build.sourceEncoding>Utf-8</project.build.sourceEncoding>
+  	<project.version>0.0.1-SNAPSHOT</project.version>
+  	<project.release.version>0.0.1</project.release.version>
+  	<springboot.web.version>1.5.10.RELEASE</springboot.web.version>
+  	<springboot.actuator.version>1.5.9.RELEASE</springboot.actuator.version>
+  	<springboot.test.version>1.5.3.RELEASE</springboot.test.version>
+  	<java.compiler.level>1.7</java.compiler.level>
+  	<maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+  	<maven.war.plugin.version>2.6</maven.war.plugin.version>
+  </properties>
+  
+  <!-- 依赖包管理  -->
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+  			<version>${springboot.web.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-starter-actuator</artifactId>
+  			<version>${springboot.actuator.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-starter-test</artifactId>
+  			<version>${springboot.test.version}</version>
+  			<scope>test</scope>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
+    
+  <!-- profiles配置 -->
+  <profiles>
+  	<profile>
+  		<id>dev</id>
+  		<activation>
+  			<activeByDefault>true</activeByDefault>
+  		</activation>
+  		<properties>
+  			<activeProfile>dev</activeProfile>
+  		</properties>
+  	</profile>
+  	<profile>
+  		<id>test</id>
+  		<properties>
+  			<activeProfile>test</activeProfile>
+  		</properties>
+  	</profile>
+  	<profile>
+  		<id>prod</id>
+  		<properties>
+  			<activeProfile>prod</activeProfile>
+  			<!-- 替换project.version值， 由snapshot切换到release版，发布到releases仓库 -->
+  			<project.version>${project.release.version}</project.version>
+  		</properties>
+  	</profile>
+  </profiles>
+  
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-compiler-plugin</artifactId>
+  			<version>${maven.compiler.plugin.version}</version>
+  			<configuration>
+  				<encoding>UTF-8</encoding>
+  				<source>${java.compiler.level}</source>
+  				<target>${java.compiler.level}</target>
+  			</configuration>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-war-plugin</artifactId>
+  			<version>${maven.war.plugin.version}</version>
+  			<configuration>
+  				<!-- 解决子模块声明<packaging>war</packaging>时报错（web.xml is missing and <failOnMissingWebXml> is set to true） -->
+  				<failOnMissingWebXml>false</failOnMissingWebXml>
+  			</configuration>
+  		</plugin>
+  	</plugins>
+  </build>
+  
+  <!-- Maven仓库 -->
+  <repositories>
+  	<repository>
+  		<id>nexus-repo</id>
+  		<name>repository</name>
+  		<url>http://172.16.1.70:9999/nexus/content/repositories/</url>
+  		<snapshots>
+  			<enabled>true</enabled>
+  			<updatePolicy>always</updatePolicy>
+  		</snapshots>
+  		<releases>
+  			<enabled>true</enabled>
+  			<checksumPolicy>warn</checksumPolicy>
+  		</releases>
+  	</repository>
+  	<repository>
+  		<id>aliyun-repos</id>
+        <name>aliyun Nexus Repository</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+  	</repository>
+  </repositories>
+  
+  <!-- 插件仓库配置 -->
+  <pluginRepositories>
+  	<pluginRepository>
+  		<id>plugin-repo</id>
+  		<name>plugin repository</name>
+  		<url>http://172.16.1.70:9999/nexus/content/repositories/</url>
+  	</pluginRepository>
+  </pluginRepositories>
+  
+  <!-- 发布仓库配置 -->
+  <distributionManagement>
+  	<repository>
+  		<id>releases</id>
+  		<name>release version</name>
+  		<url>http://172.16.1.70:9999/nexus/content/repositories/releases/</url>
+  	</repository>
+  	<snapshotRepository>
+  		<id>snapshots</id>
+  		<name>snapshot version</name>
+  		<url>http://172.16.1.70:9999/nexus/content/repositories/snapshots/</url>
+  	</snapshotRepository>
+  </distributionManagement>
+</project>

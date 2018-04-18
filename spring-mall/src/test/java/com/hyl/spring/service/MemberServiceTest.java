@@ -11,7 +11,7 @@ import com.hyl.spring.configration.PropertiesConfig;
 import com.hyl.spring.configration.model.Student;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class MemberServiceTest {
 	@Autowired
 	private MemberService memberService;

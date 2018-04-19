@@ -52,12 +52,14 @@
   		</activation>
   		<properties>
   			<activeProfile>dev</activeProfile>
+  			<serverPort>7000</serverPort>
   		</properties>
   	</profile>
   	<profile>
   		<id>test</id>
   		<properties>
   			<activeProfile>test</activeProfile>
+  			<serverPort>7010</serverPort>
   		</properties>
   	</profile>
   	<profile>
@@ -66,6 +68,7 @@
   			<activeProfile>prod</activeProfile>
   			<!-- 替换project.version值， 由snapshot切换到release版，发布到releases仓库 -->
   			<project.version>${project.release.version}</project.version>
+  			<serverPort>7020</serverPort>
   		</properties>
   	</profile>
   </profiles>
